@@ -5,11 +5,11 @@ import AppError from '@/utils/AppError';
 
 export const POST = async (req: NextRequest) => {
   const { token, newPassword } = await req.json();
-console.log(token,newPassword);
 
   if (!token || !newPassword) {
     throw new AppError('Token and new password are required', 400);
   }
+console.log("token",token);
 
   const { data: user, error } = await supabase
     .from('users')
@@ -22,8 +22,11 @@ console.log(token,newPassword);
   if (!user || error) {
     throw new AppError('Invalid or expired reset token', 400);
   }
+console.log("toke",user[0].reset_token_expiration);
 
   const isTokenExpired = new Date(user[0].reset_token_expiration) < new Date();
+  console.log("data",new Date());
+  
   if (isTokenExpired) {
     throw new AppError('Reset token has expired', 400);
   }
@@ -36,8 +39,8 @@ console.log(hashedPassword);
     .from('users')
     .update({
       password: hashedPassword,
-      reset_token: null,
-      reset_token_expiration: null,
+      // reset_token: null,
+      // reset_token_expiration: null,
     })
     .eq('id', user[0].id);
 

@@ -37,7 +37,7 @@ export const POST = async (req: NextRequest) => {
     throw new AppError('Failed to generate reset token', 500);
   }
 
-  const resetUrl = `${process.env.NEXT_PUBLIC_URL}/reset-password?token=${resetToken}`;
+  const resetUrl = `${process.env.NEXT_PUBLIC_URL}/resetpassword?token=${resetToken}`;
 
   const subject = 'Password Reset Request';
   const message = `You have requested to reset your password. Click on the following link to reset your password: ${resetUrl}\n\nIf you did not request this, please ignore this email.`;
