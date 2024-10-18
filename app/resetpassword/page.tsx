@@ -1,18 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import axiosInstance from '@/utils/axiosInstance';
 
 export default function ResetPassword() {
   const searchParams = useSearchParams();
-  const token = searchParams.get('token'); 
+  const token = searchParams.get('token');
   const [newPassword, setNewPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
   useEffect(() => {
-   console.log(token);
     if (!token) {
       setError('Invalid or missing reset token');
     }
@@ -29,10 +28,10 @@ export default function ResetPassword() {
     try {
       await axiosInstance.post('/api/reset-password', { token, newPassword });
       setSuccess('Password reset successfully. You can now log in.');
-      setNewPassword(''); 
-      setError(''); 
+      setNewPassword('');
+      setError('');
       setTimeout(() => {
-        window.location.href = '/login'; 
+        window.location.href = '/login';
       }, 3000);
     } catch (err: any) {
       setError(err.response?.data?.message || 'Something went wrong');
@@ -54,7 +53,7 @@ export default function ResetPassword() {
         <button
           type="submit"
           className="bg-blue-500 text-white p-2 rounded w-full hover:bg-blue-600"
-          disabled={!token} 
+          disabled={!token}
         >
           Reset Password
         </button>
@@ -62,5 +61,13 @@ export default function ResetPassword() {
         {success && <p className="text-green-500 mt-4">{success}</p>}
       </form>
     </div>
+  );
+}
+
+export function WrappedResetPassword() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResetPassword />
+    </Suspense>
   );
 }
