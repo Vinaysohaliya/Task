@@ -23,7 +23,7 @@ console.log(token,newPassword);
     throw new AppError('Invalid or expired reset token', 400);
   }
 
-  const isTokenExpired = new Date(user.reset_token_expiration) < new Date();
+  const isTokenExpired = new Date(user[0].reset_token_expiration) < new Date();
   if (isTokenExpired) {
     throw new AppError('Reset token has expired', 400);
   }
