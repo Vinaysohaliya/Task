@@ -22,10 +22,15 @@ console.log("token",token);
   if (!user || error) {
     throw new AppError('Invalid or expired reset token', 400);
   }
-console.log("toke",user[0].reset_token_expiration);
+  const nowTime = new Date().getTime();
 
-  const isTokenExpired = new Date(user[0].reset_token_expiration) < new Date();
-  console.log("data",new Date());
+
+  const isTokenExpired = (user[0].reset_token_expiration) < nowTime;
+
+  console.log("now",nowTime);
+  console.log("data",user[0].reset_token_expiration);
+  
+  
   
   if (isTokenExpired) {
     throw new AppError('Reset token has expired', 400);

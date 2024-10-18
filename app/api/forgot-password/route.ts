@@ -22,8 +22,9 @@ export const POST = async (req: NextRequest) => {
   }
 
   const resetToken = crypto.randomBytes(32).toString('hex');
-  const resetTokenExpiration = new Date();
-  resetTokenExpiration.setHours(resetTokenExpiration.getHours() + 1); 
+  
+  const resetTokenExpiration = Date.now() + 2* 60 * 1000; // 15 minutes from now
+console.log(resetTokenExpiration);
 
   const { error: updateError } = await supabase
     .from('users')
@@ -41,7 +42,6 @@ export const POST = async (req: NextRequest) => {
 
   const subject = 'Password Reset Request';
   const message = `You have requested to reset your password. Click on the following link to reset your password: ${resetUrl}\n\nIf you did not request this, please ignore this email.`;
-console.log("wwwwwwwwwwwwwwwwwwwwww");
 
   try {
     await sendEmail(email, subject, message);
