@@ -36,7 +36,6 @@ export const POST = async (req: NextRequest) => {
 
     const cookieOptions = {
         httpOnly: true, 
-        secure: "token", 
         maxAge: 60 * 60 * 1000, 
         path: '/', 
     };
