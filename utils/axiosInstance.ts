@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://task-h5hb-vinaysoftwarecomgmailcoms-projects.vercel.app/',
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://task-eaii.vercel.app/',
   headers: {
     'Content-Type': 'application/json',
   },
