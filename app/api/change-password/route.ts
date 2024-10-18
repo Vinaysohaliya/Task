@@ -1,11 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import { supabase } from '@/utils/supabaseClient'; 
 import AppError from '@/utils/AppError';
 
-export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
+export async function POST(req: Request) {
   try {
-    const { userId, oldPassword, newPassword } = req.body;
+    const { userId, oldPassword, newPassword } = await req.json(); // Parse the JSON body
 
     if (!userId || !oldPassword || !newPassword) {
       throw new AppError('User ID, old password, and new password are required.', 400);
@@ -38,10 +38,10 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
       throw new AppError('Failed to update password.', 500);
     }
 
-    return res.status(200).json({ success: true, message: 'Password updated successfully.' });
+    return NextResponse.json({ success: true, message: 'Password updated successfully.' });
     
   } catch (err) {
     const error = err instanceof AppError ? err : new AppError('An error occurred.', 500);
-    return res.status(error.statusCode).json({ success: false, message: error.message });
+    return NextResponse.json({ success: false, message: error.message }, { status: error.statusCode });
   }
-};
+}
