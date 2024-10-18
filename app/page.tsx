@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axiosInstance from '@/utils/axiosInstance';
-import LogoutButton from '@/components/LogOut';
+import LogoutButton from '@/components/Logout';
 
 export default function ResetPassword() {
   const [newPassword, setNewPassword] = useState('');
