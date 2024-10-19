@@ -3,6 +3,15 @@
 import { useState } from 'react';
 import axiosInstance from '../../utils/axiosInstance';
 import Link from 'next/link';
+import { z } from 'zod';
+import { useRouter } from 'next/router';
+
+// Zod schema for form validation
+const signupSchema = z.object({
+  fullName: z.string().min(1, 'Full Name is required'),
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters long'),
+});
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -10,6 +19,7 @@ export default function Signup() {
     email: '',
     password: '',
   });
+  const router=useRouter()
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -22,6 +32,18 @@ export default function Signup() {
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
+
+    // Validate the form data using Zod
+    const validation = signupSchema.safeParse(formData);
+
+    if (!validation.success) {
+      // Handle validation errors
+      const validationError = validation.error.errors[0].message;
+      setError(validationError);
+      setLoading(false);
+      return;
+    }
 
     try {
       const { fullName, email, password } = formData;
@@ -30,6 +52,7 @@ export default function Signup() {
 
       setFormData({ fullName: '', email: '', password: '' });
       setError(null);
+      router.push('/')
     } catch (err: any) {
       setError(err.response?.data?.message || 'Something went wrong');
     } finally {
