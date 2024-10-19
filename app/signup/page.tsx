@@ -4,7 +4,7 @@ import { useState } from 'react';
 import axiosInstance from '../../utils/axiosInstance';
 import Link from 'next/link';
 import { z } from 'zod';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 // Zod schema for form validation
 const signupSchema = z.object({
