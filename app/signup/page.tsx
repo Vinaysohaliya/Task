@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import axiosInstance from '../../utils/axiosInstance';
+import Link from 'next/link';
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -20,7 +21,7 @@ export default function Signup() {
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true); 
+    setLoading(true);
 
     try {
       const { fullName, email, password } = formData;
@@ -28,20 +29,21 @@ export default function Signup() {
       alert('Registration successful!');
 
       setFormData({ fullName: '', email: '', password: '' });
-      setError(null); 
+      setError(null);
     } catch (err: any) {
       setError(err.response?.data?.message || 'Something went wrong');
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-center text-2xl font-bold text-gray-700">Create an Account</h2>
+    <div className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
+      <div className="w-full max-w-md p-10 space-y-6 bg-white shadow-xl rounded-2xl">
+        <h2 className="text-center text-3xl font-bold text-gray-800">Sign Up</h2>
+        <p className="text-center text-gray-600">Create your account now!</p>
 
-        <form onSubmit={handleSignup} className="space-y-4">
+        <form onSubmit={handleSignup} className="space-y-5">
           <div>
             <input
               type="text"
@@ -49,7 +51,7 @@ export default function Signup() {
               placeholder="Full Name"
               value={formData.fullName}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
               required
             />
           </div>
@@ -61,7 +63,7 @@ export default function Signup() {
               placeholder="Email"
               value={formData.email}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
               required
             />
           </div>
@@ -73,7 +75,7 @@ export default function Signup() {
               placeholder="Password"
               value={formData.password}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
               required
             />
           </div>
@@ -81,15 +83,28 @@ export default function Signup() {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-2 px-4 text-white rounded-lg transition-colors duration-300 ${
-              loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
+            className={`w-full py-3 px-6 text-white rounded-lg font-semibold tracking-wide transition-colors duration-300 shadow-md ${
+              loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600'
             }`}
           >
-            {loading ? 'Signing up...' : 'Signup'}
+            {loading ? 'Signing up...' : 'Create Account'}
           </button>
 
-          {error && <p className="text-red-500 text-center">{error}</p>} {/* Error message in red */}
+          {error && <p className="text-red-500 text-center font-semibold mt-2">{error}</p>} {/* Error message in red */}
         </form>
+
+        <p className="text-center flex flex-col text-gray-600 mt-4">
+          Already have an account?{' '}
+          <Link href="/login" className="text-purple-500 font-semibold hover:text-purple-700">
+            Log in
+          </Link>
+          <Link
+              href="/forgotpassword"
+              className="text-indigo-500 font-semibold hover:underline"
+            >
+              forgot password
+            </Link>
+        </p>
       </div>
     </div>
   );
