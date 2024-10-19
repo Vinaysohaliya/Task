@@ -23,7 +23,7 @@ export const POST = async (req: NextRequest) => {
 
   const resetToken = crypto.randomBytes(32).toString('hex');
   
-  const resetTokenExpiration = Date.now() + 20* 60 * 1000; // 15 minutes from now
+  const resetTokenExpiration = Date.now() + 20* 60 * 1000; 
 console.log(resetTokenExpiration);
 
   const { error: updateError } = await supabase

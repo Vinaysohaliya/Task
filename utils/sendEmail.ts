@@ -2,7 +2,6 @@ import nodemailer from 'nodemailer';
 
 const sendEmail = async (to: string, subject: string, text: string) => {
   try {
-    // Create a transporter object using Ethereal for testing
     const transporter = nodemailer.createTransport({
       host: 'smtp.ethereal.email',
       port: 587,
@@ -12,12 +11,11 @@ const sendEmail = async (to: string, subject: string, text: string) => {
       }
   }); 
 
-    // Send the email
     const info = await transporter.sendMail({
-      from: 'your-ethereal-user@example.com', // Sender address
-      to, // List of receivers
-      subject, // Subject line
-      text, // Plain text body
+      from: 'your-ethereal-user@example.com', 
+      to, 
+      subject, 
+      text, 
     });
 
     console.log(`Email sent to ${to}: ${nodemailer.getTestMessageUrl(info)}`);

@@ -27,7 +27,7 @@ export const POST = (async (req: NextRequest) => {
     throw new AppError('Invalid email or password', 400);
   }
 
-  const token = jwt.sign({ userId: user[0].id, email: user[0].email }, 'token', { expiresIn: '1h' });
+  const token = jwt.sign({ userId: user[0].id, email: user[0].email },  process.env.JWT_SECRATE!||'token', { expiresIn: '1h' });
 
   user[0].password = undefined;
 

@@ -32,7 +32,7 @@ export const POST = async (req: NextRequest) => {
         throw new AppError('User registration failed, please try again later', 400);
     }
 
-    const token = jwt.sign({ userId: user[0].id, email: user[0].email }, process.env.NEXT_PUBLIC_SUPABASE_URL!||"token", { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user[0].id, email: user[0].email }, process.env.JWT_SECRATE!||'token', { expiresIn: '1h' });
 
     const cookieOptions = {
         httpOnly: true, 
