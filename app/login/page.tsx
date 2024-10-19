@@ -2,11 +2,19 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { z } from 'zod';
 import axiosInstance from '../../utils/axiosInstance';
-import Link from 'next/link';
+
+const loginSchema = z.object({
+  email: z.string().email({ message: 'Invalid email format' }),
+  password: z
+    .string()
+    .min(6, { message: 'Password must be at least 6 characters long' }),
+});
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formErrors, setFormErrors] = useState({ email: '', password: '' });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -18,14 +26,27 @@ export default function Login() {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const result = loginSchema.safeParse(formData);
+    if (!result.success) {
+      const fieldErrors = result.error.format();
+      setFormErrors({
+        email: fieldErrors.email?._errors?.[0] || '',
+        password: fieldErrors.password?._errors?.[0] || '',
+      });
+      return;
+    }
+
+    setFormErrors({ email: '', password: '' }); 
     setLoading(true);
 
     try {
       const { email, password } = formData;
-      const { data } = await axiosInstance.post('/api/login', { email, password });
-      localStorage.setItem('token', data.token);
+      const data  = await axiosInstance.post('/api/login', { email, password });
       router.push('/');
     } catch (err: any) {
+      console.log(err);
+      
       setError(err.response?.data?.error || 'Something went wrong');
     } finally {
       setLoading(false);
@@ -45,9 +66,14 @@ export default function Login() {
               placeholder="Email"
               value={formData.email}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                formErrors.email
+                  ? 'border-red-500 focus:ring-red-500'
+                  : 'border-gray-300 focus:ring-indigo-400'
+              }`}
               required
             />
+            {formErrors.email && <p className="text-red-500 text-sm">{formErrors.email}</p>}
           </div>
 
           <div>
@@ -57,9 +83,14 @@ export default function Login() {
               placeholder="Password"
               value={formData.password}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                formErrors.password
+                  ? 'border-red-500 focus:ring-red-500'
+                  : 'border-gray-300 focus:ring-indigo-400'
+              }`}
               required
             />
+            {formErrors.password && <p className="text-red-500 text-sm">{formErrors.password}</p>}
           </div>
 
           <button
@@ -72,23 +103,17 @@ export default function Login() {
             {loading ? 'Logging in...' : 'Login'}
           </button>
 
-          {error && <p className="text-red-500 text-center">{error}</p>} 
+          {error && <p className="text-red-500 text-center">{error}</p>}
 
-          <p className="text-center flex flex-col text-gray-600 mt-4">
+          <p className="text-center text-gray-600 mt-4">
             Don't have an account?{' '}
-            <Link
+            <a
               href="/signup"
               className="text-indigo-500 font-semibold hover:underline"
             >
               Sign up
-            </Link>
-            <Link
-              href="/forgotpassword"
-              className="text-indigo-500 font-semibold hover:underline"
-            >
-              forgot password
-            </Link>
-          </p> 
+            </a>
+          </p>
         </form>
       </div>
     </div>

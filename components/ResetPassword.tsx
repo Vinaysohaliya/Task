@@ -39,27 +39,31 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-96">
-        <h2 className="text-xl font-bold mb-4">Reset Password</h2>
-        <input
-          type="password"
-          placeholder="New Password"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          required
-          className="border border-gray-300 p-2 mb-4 w-full rounded"
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white p-2 rounded w-full hover:bg-blue-600"
-          disabled={!token}
-        >
-          Reset Password
-        </button>
-        {error && <p className="text-red-500 mt-4">{error}</p>}
-        {success && <p className="text-green-500 mt-4">{success}</p>}
-      </form>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-500 via-pink-500 to-red-500">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center mb-6 text-gray-700">Reset Password</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <input
+              type="password"
+              placeholder="New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full py-2 px-4 text-white font-semibold bg-pink-500 rounded-lg hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-pink-600 transition duration-300"
+            disabled={!token}
+          >
+            Reset Password
+          </button>
+          {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+          {success && <p className="text-green-500 text-center mt-4">{success}</p>}
+        </form>
+      </div>
     </div>
   );
 }

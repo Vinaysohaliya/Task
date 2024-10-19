@@ -39,7 +39,7 @@ export default function Signup() {
 
   return (
     <div className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
-      <div className="w-full max-w-md p-10 space-y-6 bg-white shadow-xl rounded-2xl">
+      <div className="w-full max-w-md p-10 space-y-6 bg-white shadow-2xl rounded-2xl">
         <h2 className="text-center text-3xl font-bold text-gray-800">Sign Up</h2>
         <p className="text-center text-gray-600">Create your account now!</p>
 

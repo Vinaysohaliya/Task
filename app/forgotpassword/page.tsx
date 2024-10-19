@@ -27,9 +27,9 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-md shadow-md w-full max-w-sm">
-        <h1 className="text-2xl font-bold mb-4">Forgot Password</h1>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
+        <h1 className="text-2xl font-bold text-gray-700 mb-6 text-center">Forgot Password</h1>
 
         <input
           type="email"
@@ -37,19 +37,21 @@ export default function ForgotPassword() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="w-full p-2 mb-4 border border-gray-300 rounded-md"
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
         />
 
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded-md"
+          className={`w-full py-2 px-4 text-white font-semibold rounded-md transition-colors duration-300 mt-4 ${
+            loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-purple-500 hover:bg-purple-600'
+          }`}
           disabled={loading}
         >
           {loading ? 'Sending...' : 'Send Reset Link'}
         </button>
 
-        {message && <p className="text-green-500 mt-4">{message}</p>}
-        {error && <p className="text-red-500 mt-4">{error}</p>}
+        {message && <p className="text-green-500 mt-4 text-center">{message}</p>}
+        {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
       </form>
     </div>
   );
